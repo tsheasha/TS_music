@@ -14,6 +14,12 @@ Launch server with
 npm start
 ```
 
+Bootstrap data using Python script if needed with 
+(need to have requests library installed : pip install requests)
+```
+python bootstrap.py
+```
+
 ## Tests
 
 Running `npm test` will run all of the mocha tests located in the `test/` directory. The specified tests currently are integration tests for 3 endpoints. `POST /listen`,  `POST /follow` and `GET /recommendations?user=<USER_ID>`.
