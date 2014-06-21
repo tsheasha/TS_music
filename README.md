@@ -22,7 +22,7 @@ Running `npm test` will run all of the mocha tests located in the `test/` direct
 
 ### Follow
 
-  POST /follow
+    POST /follow
 
 Parameters
 
@@ -36,7 +36,7 @@ Response
           HTTP/1.1 201
 ### Listen
 
-  POST /listen
+    POST /listen
 
 Parameters
 
@@ -51,7 +51,7 @@ Response
 
 ### Recommendations
 
-  GET /recommendations
+    GET /recommendations
 
 Parameters
 
