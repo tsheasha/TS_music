@@ -1,11 +1,11 @@
 Describe in a high level the solution you have in mind
 > In order to generate recommendations for the user correctly I considered the following algorithm
-> *1. Consider first the music that was listened by the first-degree followees of the user
-> *2. Rank the music list of the followees by giving a higher rank to music that is common between followees, the more followees that listen to a certain song that higher recommended that song is.
-> *3. Filter out the music the user has listened to before from the followees music list.
-> *4. Map the ranks to songs hence having a list of key-value pairs of rank and the sogs in that rank
-> *5. Sort the mapped ranks by the rank (key)
-> *6. Finally, fill in the recommended song list from the sorted list until 5 songs are reached. If the recommended list has less than 5 songs, randomly add songs to the list to increase song discovery.
+> * 1. Consider first the music that was listened by the first-degree followees of the user
+> * 2. Rank the music list of the followees by giving a higher rank to music that is common between followees, the more followees that listen to a certain song that higher recommended that song is.
+> * 3. Filter out the music the user has listened to before from the followees music list.
+> * 4. Map the ranks to songs hence having a list of key-value pairs of rank and the sogs in that rank
+> * 5. Sort the mapped ranks by the rank (key)
+> * 6. Finally, fill in the recommended song list from the sorted list until 5 songs are reached. If the recommended list has less than 5 songs, randomly add songs to the list to increase song discovery.
 
 What other data could you use to improve recommendations?
 > * If I have the genre of music this would massively help in deciding what to recommend
