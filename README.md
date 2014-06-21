@@ -33,7 +33,7 @@ Parameters
 
 Response
 
-          HTTP/1.1 201
+    HTTP/1.1 201
 ### Listen
 
     POST /listen
@@ -47,7 +47,7 @@ Parameters
 
 Response
 
-          HTTP/1.1 201
+    HTTP/1.1 201
 
 ### Recommendations
 
