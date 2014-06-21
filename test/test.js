@@ -1,9 +1,7 @@
-var assert = require('assert');
-var express = require('express');
 var request = require('request');
 var async = require('async');
-var path = require('path');
 var fs = require('fs');
+var assert = require('assert');
 
 // Launch server
 var server = require('../runserver.js');
@@ -12,11 +10,10 @@ var server = require('../runserver.js');
 var userQueryString = 'a';
 var baseURI = 'http://localhost:3000/';
 
-var options = { method: ''
-  , uri: baseURI
-  , headers: {'Content-Type': 'application/json'}
-  , json: {}
-};
+var options = { method: '', 
+                uri: '',
+                headers: {'Content-Type': 'application/json'},
+                parameters: {}};
 
 /**
  * SendRequest
@@ -25,13 +22,12 @@ var options = { method: ''
  */
 function SendRequest(item, callback){
 	// Attach JSON
-	options.json=item;
+	options.parameters=item;
 
 	request(options, function(err, response, body){
 		HandleResponse(err, response, body);
 		callback(err);
 	});
-
 }
 
 /**
@@ -48,26 +44,31 @@ function HandleResponse(err, res, body){
 	}
 }
 
+function FileToJSON(filename){
+    return JSON.parse(fs.readFileSync(filename));
+}
+
 describe('Music Recommender System', function() {
-  describe('Listen', function() {
-    it('Executes the listen command with the provided JSON', function(done){
+  describe('POST /listen', function() {
+    it('Passes JSON to listen endpoint', function(done){
 		
         // Setup Options JSON for the requests to be sent
 		options.uri = baseURI+'listen';
 		options.method = 'POST';
 
 		// Read data from jsonFile
-		var listenJSON;
-		var fileContent = fs.readFileSync('./test/data/listen.json');
+		var listenJSON = FileToJSON('./test/data/listen.json');
 		
-        listenJSON = JSON.parse(fileContent);
-
 		// Build array of requests to be sent to server, and store in array
 		var listenRequests =[];
 		for (var key in listenJSON.userIds){
-			for (var i = 0; i<listenJSON.userIds[key].length; i++){
-				listenRequests.push({user:key, song:listenJSON.userIds[key][i]});
-
+			for (var i = 0; i < listenJSON.userIds[key].length; i++){
+				listenRequests.push({
+                    
+                    user: key, 
+                    song: listenJSON.userIds[key][i]
+                
+                });
 			}
 		}
 		
@@ -77,24 +78,25 @@ describe('Music Recommender System', function() {
 
   });
   
-  describe('Follow', function() {
-    it('Executes the follow command with the provided JSON', function(done){
+  describe('POST / follow', function() {
+    it('Passes JSON to follow endpoint', function(done){
 		// Setup Options JSON for the requests to be sent
 		options.uri = baseURI+'follow';
 		options.method = 'POST';
 
 		// Read data from jsonFile
-		var followsJSON;
-		var fileContent = fs.readFileSync('./test/data/follows.json');
-		
-        followsJSON = JSON.parse(fileContent);
+		var followsJSON = FileToJSON('./test/data/follows.json');
 
 		// Build array of requests to be sent to server, and store in array
 		var followsRequests =[];
-		for (var i = 0; i<followsJSON.operations.length; i++){
-			followsRequests.push({from:followsJSON.operations[i][0], to:followsJSON.operations[i][1]});
+		for (var i = 0; i < followsJSON.operations.length; i++){
+			followsRequests.push({
+                
+                follower: followsJSON.operations[i][0], 
+                followee: followsJSON.operations[i][1]
+                
+            });
 		}
-		
         async.each(followsRequests, SendRequest, done);
 	});
   });
@@ -107,7 +109,13 @@ describe('Music Recommender System', function() {
 		options.method = 'GET';
 
 		// Execute request
-		SendRequest(null, function(err){done()});
+        request.get({url: options.uri, json: true}, function (err, resp, body) {
+          response = resp;
+          assert.equal(200, response.statusCode);
+          assert.equal(5, body.list.length);          
+          done(err);
+        });
+        
 	});
   });
 });
